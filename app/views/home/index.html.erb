@@ -1,6 +1,19 @@
 <% if user_signed_in? %>
   <h1>Logado</h1>
   <%= button_to 'Log out', destroy_user_session_path, method: :delete , class: 'btn btn-primary btn-lg' %>
+
+  <%= form_with model: Post.new, url: posts_path, method: :post, local: true do |f| %>
+    <%= f.text_field :body %>
+    <%= f.submit %>
+  <% end %>
+
+  <ul>
+    <% Post.find_each do |post| %>
+      <li>
+        <%= post.body %>
+      </li>
+    <% end %>
+  </ul>
 <% else %>
   <h1>hELLO</h1>
   <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-lg" %>
