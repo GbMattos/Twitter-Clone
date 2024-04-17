@@ -9,5 +9,7 @@ Rails.application.routes.draw do
   # Defines the root path route ("/")
   root "home#index"
 
-  resources :posts, only: :create
+  resources :posts, only: [:create, :edit, :update, :destroy]
+
+  get 'profile', to: 'users#profile', as: 'user_profile'
 end

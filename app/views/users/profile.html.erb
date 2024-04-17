@@ -1,0 +1,50 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <% if user_signed_in? %>
+        <% @posts.each do |post| %>
+          <div class="card mb-3">
+            <div class="card-body">
+              <div class="d-flex align-items-center">
+                <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="<%= post.user.name %>">
+                <h6 class="ml-4"><%= post.user.name %></h6>
+              </div>
+              <div class="media-body mt-2">
+                <p class="mb-0"><%= post.body %></p>
+              </div>
+              <% if post.user == current_user %>
+                <div class="d-flex mt-2">
+                  <%= link_to 'Editar', "#editPostModal#{post.id}", data: { bs_toggle: "modal", bs_target: "#editPostModal#{post.id}" }, class: 'btn btn-secondary me-2' %>
+                  <%= button_to 'Apagar', post, method: :delete, data: { confirm: 'Você tem certeza?' }, class: 'btn btn-danger' %>
+                </div>
+
+                <div class="modal fade" id="editPostModal<%= post.id %>" tabindex="-1" role="dialog" aria-labelledby="editPostModalLabel<%= post.id %>" aria-hidden="true">
+                  <div class="modal-dialog" role="document">
+                    <div class="modal-content">
+                      <div class="modal-header">
+                        <h5 class="modal-title" id="editPostModalLabel<%= post.id %>">Editar Post</h5>
+                      </div>
+                      <div class="modal-body">
+                        <%= form_for(post, remote: true) do |f| %>
+                          <div class="form-group">
+                            <%= f.text_area :body, class: 'form-control', rows: 3, required: true %>
+                          </div>
+                          <div class="modal-footer">
+                            <%= f.submit 'Salvar', class: 'btn btn-primary' %>
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
+                          </div>
+                        <% end %>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              <% end %>
+            </div>
+          </div>
+        <% end %>
+      <% end %>
+
+      <%= will_paginate @posts, renderer: BootstrapPagination::Rails, previous_label: "&laquo;".html_safe, next_label: "&raquo;".html_safe, class: 'pagination justify-content-center' %>
+    </div>
+  </div>
+</div>

@@ -1,21 +1,37 @@
-<% if user_signed_in? %>
-  <h1>Logado</h1>
-  <%= button_to 'Log out', destroy_user_session_path, method: :delete , class: 'btn btn-primary btn-lg' %>
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <% if user_signed_in? %>
+        <div class="card mb-3">
+          <div class="card-body">
+            <%= form_for(Post.new) do |f| %>
+              <div class="form-group">
+                <%= f.text_area :body, class: "form-control", rows: "3", placeholder: "What's happening?", required: true %>
+              </div>
+              <%= f.submit "Post", class: "mt-3 btn btn-primary" %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
 
-  <%= form_with model: Post.new, url: posts_path, method: :post, local: true do |f| %>
-    <%= f.text_field :body %>
-    <%= f.submit %>
-  <% end %>
+      <ul class="list-unstyled">
+        <% @posts.each do |post| %>
+          <li class="media mb-4 p-3 border rounded">
+            <div class="d-flex align-items-center">
+              <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="Profile">
+              <h6 class="ml-4"><%= post.user.name %></h6>
+            </div>
 
-  <ul>
-    <% Post.find_each do |post| %>
-      <li>
-        <%= post.body %>
-      </li>
-    <% end %>
-  </ul>
-<% else %>
-  <h1>hELLO</h1>
-  <%= link_to "Sign up", new_user_registration_path, class: "btn btn-primary btn-lg" %>
-  <%= link_to 'Log in', new_user_session_path, class: "btn btn-outline-primary btn-lg" %>
-<% end %>
+            <div class="media-body mt-2">
+              <div class="d-flex align-items-center justify-content-between">
+                <p class="mb-0"><%= post.body %></p>
+              </div>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+
+      <%= will_paginate @posts, renderer: BootstrapPagination::Rails, previous_label: "&laquo;".html_safe, next_label: "&raquo;".html_safe, class: 'pagination justify-content-center' %>
+    </div>
+  </div>
+</div>

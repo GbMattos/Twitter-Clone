@@ -1,0 +1,25 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-primary navbar-custom">
+  <div class="container-fluid">
+    <a class="navbar-brand text-white" href="/">MyApp</a>
+    <div class="collapse navbar-collapse" id="navbarNav">
+      <ul class="navbar-nav ms-auto">
+        <% if user_signed_in? %>
+          <li class="nav-item me-3">
+            <%= button_to 'Logout', destroy_user_session_path, method: :delete, form_class: 'd-inline', class: 'btn btn-outline-danger text-white' %>
+          </li>
+
+          <li class="nav-item">
+            <%= link_to 'Perfil', user_profile_path, class: 'btn btn-outline-success text-white' %>
+          </li>
+        <% else %>
+          <li class="nav-item me-2">
+            <%= link_to 'Login', new_user_session_path, class: 'btn btn-outline-success text-white' %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Sign Up', new_user_registration_path, class: 'btn btn-outline-info text-white' %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+</nav>
