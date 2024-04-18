@@ -12,4 +12,8 @@ Rails.application.routes.draw do
   resources :posts, only: [:create, :edit, :update, :destroy]
 
   get 'profile', to: 'users#profile', as: 'user_profile'
+
+  resources :posts do
+    resources :comments, only: [:create]
+  end
 end

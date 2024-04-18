@@ -14,23 +14,57 @@
         </div>
       <% end %>
 
-      <ul class="list-unstyled">
-        <% @posts.each do |post| %>
-          <li class="media mb-4 p-3 border rounded">
+      <% @posts.each do |post| %>
+        <div class="card mb-3">
+          <div class="card-body">
             <div class="d-flex align-items-center">
-              <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="Profile">
+              <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="<%= post.user.name %>">
               <h6 class="ml-4"><%= post.user.name %></h6>
             </div>
-
             <div class="media-body mt-2">
-              <div class="d-flex align-items-center justify-content-between">
-                <p class="mb-0"><%= post.body %></p>
+              <p class="mb-0 post-body-text"><%= post.body %></p>
+              <%= link_to 'Comentários', "#commentsModal#{post.id}", data: { bs_toggle: "modal", bs_target: "#commentsModal#{post.id}" }, class: 'btn btn-primary mt-2' %>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal fade" id="commentsModal<%= post.id %>" tabindex="-1" role="dialog" aria-labelledby="commentsModalLabel<%= post.id %>" aria-hidden="true">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title" id="commentsModalLabel<%= post.id %>">Comentários</h5>
+              </div>
+              <div class="modal-body">
+                <div class="d-flex align-items-center">
+                  <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="<%= post.user.name %>">
+                  <h6 class="ml-4"><%= post.user.name %></h6>
+                </div>
+                <p class="post-body-text-comment"><%= post.body %></p>
+                <hr>
+                <%= form_with(model: [post, Comment.new], local: true) do |f| %>
+                  <div class="form-group">
+                    <%= f.text_area :body, class: 'form-control', rows: 2, placeholder: "Adicione um comentário..." %>
+                  </div>
+                  <%= f.submit 'Comentar', class: 'btn btn-primary mt-2' %>
+                <% end %>
+                <div class="comments mt-4">
+                  <% post.comments.order(created_at: :desc).each do |comment| %>
+                    <div class="card comment mb-2">
+                      <div class="card-body">
+                        <strong><%= comment.user ? comment.user.name : 'Anônimo' %>:</strong>
+                        <p><%= comment.body %></p>
+                      </div>
+                    </div>
+                  <% end %>
+                </div>
+              </div>
+              <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fechar</button>
               </div>
             </div>
-          </li>
-        <% end %>
-      </ul>
-
+          </div>
+        </div>
+      <% end %>
       <%= will_paginate @posts, renderer: BootstrapPagination::Rails, previous_label: "&laquo;".html_safe, next_label: "&raquo;".html_safe, class: 'pagination justify-content-center' %>
     </div>
   </div>
