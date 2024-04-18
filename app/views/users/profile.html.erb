@@ -4,7 +4,11 @@
       <% if user_signed_in? %>
         <div class="profile-zone">
           <div class="d-flex align-items-center justify-content-between">
-            <img src="https://via.placeholder.com/133x133" class="ms-4 rounded-circle align-self-start" alt="<%= current_user.name %>">
+            <% if current_user.avatar.attached? %>
+              <%= image_tag current_user.avatar, class: "ms-4 rounded-circle align-self-start profile-image" %>
+            <% else %>
+              <%= image_tag "default-avatar.png", class: "ms-4 rounded-circle align-self-start profile-image" %>
+            <% end %>
             <%= link_to 'Editar perfil', "#editProfileModal", data: { bs_toggle: "modal", bs_target: "#editProfileModal" }, class: 'btn btn-outline-primary mt-5' %>
           </div>
           <h6 class="ms-3 mt-3 fs-4 mb-5"><%= current_user.name %></h6>
@@ -13,7 +17,11 @@
           <div class="card mb-3">
             <div class="card-body">
               <div class="d-flex align-items-center">
-                <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="<%= post.user.name %>">
+                <% if post.user.avatar.attached? %>
+                  <%= image_tag post.user.avatar, class: "me-3 rounded-circle align-self-start profile-image-post" %>
+                <% else %>
+                  <%= image_tag "default-avatar.png", class: "me-3 rounded-circle align-self-start profile-image-post" %>
+                <% end %>
                 <h6 class="ml-4"><%= post.user.name %></h6>
               </div>
               <div class="media-body post-body-text-comment">
@@ -54,8 +62,43 @@
             <div class="modal-content">
               <div class="modal-header">
                 <h5 class="modal-title" id="editProfileModalLabel">Editar Perfil</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
               </div>
               <div class="modal-body">
+                <%= form_for(current_user, url: user_registration_path, html: { method: :put, multipart: true }) do |f| %>
+                  <div class="form-group mb-2">
+                    <%= f.label :name, "Nome" %>
+                    <%= f.text_field :name, value: current_user.name, class: 'form-control' %>
+                  </div>
+
+                  <div class="form-group mb-2">
+                    <%= f.label :avatar, "Foto de Perfil" %>
+                    <%= f.file_field :avatar, class: 'form-control' %>
+                  </div>
+
+                  <div class="form-group mb-2">
+                    <%= f.label 'Senha' %> <i>(Deixa em branco para não alterar)</i>
+                    <%= f.password_field :password, autocomplete: "new-password" %>
+                    <% if @minimum_password_length %>
+                      <em><%= @minimum_password_length %> mínimo de caracteres</em>
+                    <% end %>
+                  </div>
+
+                  <div class="form-group mb-2">
+                    <%= f.label 'Confirme a senha' %><br />
+                    <%= f.password_field :password_confirmation, autocomplete: "new-password" %>
+                  </div>
+
+                  <div class="form-group">
+                    <%= f.label 'Senha atual' %> <i>(Precisamos da sua senha atual para salvar)</i>
+                    <%= f.password_field :current_password, autocomplete: "current-password" %>
+                  </div>
+
+                  <div class="modal-footer">
+                    <%= f.submit "Salvar Alterações", class: 'btn btn-primary' %>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                  </div>
+                <% end %>
               </div>
             </div>
           </div>

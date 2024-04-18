@@ -18,7 +18,11 @@
         <div class="card mb-3">
           <div class="card-body">
             <div class="d-flex align-items-center">
-              <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="<%= post.user.name %>">
+              <% if post.user.avatar.attached? %>
+                <%= image_tag post.user.avatar, class: "me-3 rounded-circle align-self-start profile-image-post" %>
+              <% else %>
+                <%= image_tag "default-avatar.png", class: "me-3 rounded-circle align-self-start profile-image-post" %>
+              <% end %>
               <h6 class="ml-4"><%= post.user.name %></h6>
             </div>
             <div class="media-body mt-2">
@@ -36,7 +40,11 @@
               </div>
               <div class="modal-body">
                 <div class="d-flex align-items-center">
-                  <img src="https://via.placeholder.com/50x50" class="me-3 rounded-circle align-self-start" alt="<%= post.user.name %>">
+                  <% if post.user.avatar.attached? %>
+                    <%= image_tag post.user.avatar, class: "me-3 rounded-circle align-self-start profile-image-post" %>
+                  <% else %>
+                    <%= image_tag "default-avatar.png", class: "me-3 rounded-circle align-self-start profile-image-post" %>
+                  <% end %>
                   <h6 class="ml-4"><%= post.user.name %></h6>
                 </div>
                 <p class="post-body-text-comment"><%= post.body %></p>
