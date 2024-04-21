@@ -23,5 +23,6 @@
   },
   "devDependencies": {
     "postcss-cli": "^11.0.0"
-  }
+  },
+  "packageManager": "yarn@1.22.19"
 }
