@@ -74,6 +74,8 @@ end
 
 group :test do
   gem 'shoulda-matchers', '~> 5.0'
+  gem 'database_cleaner'
+  gem 'rails-controller-testing'
 end
 
 gem "dockerfile-rails", ">= 1.6", :group => :development

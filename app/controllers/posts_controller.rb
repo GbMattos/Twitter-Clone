@@ -12,7 +12,6 @@ class PostsController < ApplicationController
 
   def edit
     @post = Post.find(params[:id])
-    # Certifique-se de que apenas o usuário que criou o post possa editá-lo
   end
 
   def update

@@ -1,6 +1,7 @@
 FactoryBot.define do
   factory :post do
-    user { nil }
-    body { "MyString" }
+    body { "Example content..." }
+    user
+    created_at { Time.current }
   end
 end
